@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="css\projeto.css">
+
+    <title>Gráfico de Linhas com Chart.js</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="./alerta.js"></script>
+</head>
+
+
+<body>
+    <div class="head">
+
+        <div class="logo"> <a href="index.html">
+                <p> <span
+                        style="color:rgb(255, 255, 255); font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                        Foby<span style="color:rgb(238, 0, 0)">Fashion</span></span></p>
+            </a>
+
+        </div>
+
+        <nav class="navbar">
+            <a href="index.html">HOME</a>
+            <a href="fashion.html">FASHION</a>
+            <a href="cultura.html">CULTURA</a>
+            <a href="lifestyle.html">LIFESTYLE</a>
+            <a href="MUSICA.HTML">MÚSICA</a>
+            <a href="quiz.html">QUIZ</a>
+            <a href="login.html"> LOGIN</a>
+        </nav>
+    </div>
+
+
+    <div class="fundo">
+        <div class="grafico">
+            <p> <b> Temas de interesse</b></p>
+            <canvas id="barChart" style="position:relative; height:50%; width:50%"> </canvas>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="grafico2">
+            <p> <b> Marcas de perfumes mais vendidos em 2023</b></p>
+            <canvas id="lineChart" style="position:relative; height:50%; width:50%"> </canvas>
+
+            <script>
+
+                var ctx = document.getElementById('lineChart').getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'bar',
+                    barColor: 'rgba(#ff4141f0)',
+                    data: {
+                        labels: ["Channel", "Versage", "Dolce&Gabbana", "Yves Saint Laurent", "Paco Rabanne", "Carolina Herrera"],
+                        datasets: [
+
+                            {
+                                label: 'Quantidade %',
+                                data: [95, 85, 90, 80, 70, 95],
+                                fill: false,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+
+
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+
+    window.onload = obterDadosGraficos();
+
+    function obterDadosGraficos() {
+        obterDadosGrafico(1)
+
+    }
+
+
+
+    // O gráfico é construído com três funções:
+    // 1. obterDadosGrafico -> Traz dados do Banco de Dados para montar o gráfico da primeira vez
+    // 2. plotarGrafico -> Monta o gráfico com os dados trazidos e exibe em tela
+    // 3. atualizarGrafico -> Atualiza o gráfico, trazendo novamente dados do Banco
+
+    // Esta função *obterDadosGrafico* busca os últimos dados inseridos em tabela de medidas.
+    // para, quando carregar o gráfico da primeira vez, já trazer com vários dados.
+    // A função *obterDadosGrafico* também invoca a função *plotarGrafico*
+
+    //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
+    //     Para ajustar o "select", ajuste o comando sql em src/models
+    function obterDadosGrafico(idQuiz) {
+
+
+        fetch(`/medidas/ultimas/${idQuiz}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+
+                    plotarGrafico(resposta, idQuiz);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    // Esta função *plotarGrafico* usa os dados capturados na função anterior para criar o gráfico
+    // Configura o gráfico (cores, tipo, etc), materializa-o na página e, 
+    // A função *plotarGrafico* também invoca a função *atualizarGrafico*
+    function plotarGrafico(resposta, idQuiz) {
+
+        console.log('iniciando plotagem do gráfico...');
+
+        // Criando estrutura para plotar gráfico - labels
+        let labels = [];
+
+        // Criando estrutura para plotar gráfico - dados
+        let dados = {
+            labels: labels,
+            datasets: [{
+                label: 'resposta',
+                data: [],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            },
+            ]
+        };
+
+        console.log('----------------------------------------------');
+        console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":');
+        console.log(resposta);
+
+        // Inserindo valores recebidos em estrutura para plotar o gráfico
+        for (i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            labels.push(registro.resposta);
+            dados.datasets[0].data.push(registro.numero);
+        }
+
+        console.log('----------------------------------------------')
+        console.log('O gráfico será plotado com os respectivos valores:')
+        console.log('Labels:')
+        console.log(labels)
+        console.log('Dados:')
+        console.log(dados.datasets)
+        console.log('----------------------------------------------')
+
+        // Criando estrutura para plotar gráfico - config
+        const config = {
+            type: 'bar',
+            data: dados,
+        };
+
+        // Adicionando gráfico criado em div na tela
+        let myChart = new Chart(
+            document.getElementById(`barChart`),
+            config
+        );
+
+
+    }
+
+
+
+</script>

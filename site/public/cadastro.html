@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css\projeto.css">
+
+
+    <script src="./js/funcoes.js"></script>
+</head>
+
+<body>
+
+    <div class="head">
+        <div class="logo"> <a href="index.html">
+                <p> <span
+                        style="color:rgb(255, 255, 255); font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                        Foby<span style="color:rgb(238, 0, 0)">Fashion</span></span></p>
+            </a>
+
+        </div>
+
+        <nav class="navbar">
+            <a href="index.html">HOME</a>
+            <a href="fashion.html">FASHION</a>
+            <a href="cultura.html">CULTURA</a>
+            <a href="lifestyle.html">LIFESTYLE</a>
+            <a href="musica.html">MÚSICA</a>
+            <a href="quiz.html">QUIZ</a>
+            <a href="login.html"> LOGIN</a>
+        </nav>
+    </div>
+
+    <section class="content sit">
+        <h3> <span style="color:rgb(255, 0, 0)"> SEJA BEM-VINDO!</span> </h3>
+
+
+        <div class="cx-container">
+            <div class="cx">
+                <i class="fab fa-angular"></i><br>
+                <h4 class="title"> <span style="color:rgb(255, 251, 9)"> Cadastre-se</span> </h4>
+                <br>
+
+                <div class="login">
+
+                    <input type="text" id="nome" placeholder="Digite seu nome" required>
+
+                    <br>
+
+                    <input type="text" id="sobrenome" placeholder="Digite seu sobrenome" required>
+
+                    <br>
+                    <input type="text" id="email" placeholder="Digite seu e-mail" required>
+
+                    <br>
+
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                    <br>
+
+                    <input type="password" id="confirmacao_senha" placeholder="Confirme a sua senha" required>
+                    <br>
+                    <button class="botao" onclick="cadastrar()">Cadastrar</button>
+
+                </div>
+
+            </div>
+    </section>
+
+    <section class="mine">
+
+        <div class="square"> </div>
+
+</body>
+
+</html>
+
+<script>
+    function cadastrar() {
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeVar = nome.value;
+        var sobrenomeVar = sobrenome.value;
+        var emailVar = email.value;
+        var senhaVar = senha.value;
+        var confirmacaoSenhaVar = confirmacao_senha.value;
+
+        if (nomeVar == "" || sobrenomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
+            return;
+        }
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                sobrenomeServer: sobrenomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+
+
+                setTimeout(() => {
+                    window.location = "login.html";
+                }, "2000")
+
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+    }
+
+
+</script>

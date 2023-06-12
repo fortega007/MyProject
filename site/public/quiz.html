@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css\quiz.css">
+  <script src="../js/funcoes.js"></script>
+
+
+
+</head>
+
+<body>
+
+  <div class="head">
+
+
+
+    <div class="logo"> <a href="index.html">
+        <p> <span
+            style="color:rgb(255, 255, 255); font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+            Foby<span style="color:rgb(238, 0, 0)">Fashion</span></p>
+      </a>
+
+    </div>
+
+    <nav class="navbar">
+      <a href="index.html">HOME</a>
+      <a href="fashion.html">FASHION</a>
+      <a href="cultura.html">CULTURA</a>
+      <a href="lifestyle.html">LIFESTYLE</a>
+      <a href="MUSICA.HTML">MÚSICA</a>
+      <a href="quiz.html">QUIZ</a>
+      <a href="login.html"> LOGIN</a>
+
+
+    </nav>
+
+
+  </div>
+
+
+  <div class="quiz">
+    <div class="quiz2">
+      <form>
+
+        <fieldset>
+          <br>
+          <p><b>Quais do tema a seguir é de seu interesse? </b></p>
+          <label>
+            <input type="checkbox" name="q2" value="a" class="quiz" id="resposta1">
+            Música
+          </label>
+          <br>
+          <label>
+            <input type="checkbox" name="q2" value="b" class="quiz" id="resposta2">
+            Cinema
+          </label>
+          <br>
+          <label>
+            <input type="checkbox" name="q2" value="c" class="quiz" id="resposta3">
+            Estilo de vida
+          </label>
+          <br>
+          <label>
+            <input type="checkbox" name="q2" value="d" class="quiz" id="resposta4">
+            Fitness
+          </label>
+          <br>
+          <label>
+            <input type="checkbox" name="q2" value="e" class="quiz" id="resposta5">
+            Tecnologia
+          </label>
+        </fieldset>
+
+        <form onsubmit="return false;">
+          <!-- Perguntas... -->
+          <br>
+          <button onclick="processarQuiz()">Enviar</button>
+
+          <output id="resposta"></output>
+
+        </form>
+
+    </div>
+    <div class="calculadora">
+      <title>Calculadora de Porcentagem de Gastos</title>
+      <script>
+        function calcularPorcentagem() {
+          var salario = parseFloat(document.getElementById('salario').value);
+          var valorGasto = parseFloat(document.getElementById('valorGasto').value);
+
+          var porcentagemGasto = (valorGasto / salario) * 100;
+          document.getElementById('porcentagem').textContent = porcentagemGasto.toFixed(2) + '%';
+        }
+      </script>
+      <h1>Calculadora de Porcentagem<br>
+        de Gastos ao ano com roupas</h1>
+      <br>
+      <label for="salario">Salário ao ano:</label><br>
+      <input type="number" id="salario" step="0.01">
+
+      <br>
+      <br>
+      <label for="valorGasto">Valor gasto ao ano:</label><br>
+      <input type="number" id="valorGasto" step="0.01">
+
+      <br>
+      <br>
+
+      <button onclick="calcularPorcentagem()">Calcular</button>
+      <br>
+      <br>
+
+      <p>Porcentagem de gastos com roupas ao ano: <span id="porcentagem"></span></p>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
+<script>
+  function processarQuiz() {
+    var respostas = [];
+    respostas.push(document.getElementsByClassName("quiz").checked)
+    console.log(respostas);
+
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const q2Values = urlParams.getAll("q2");
+    console.log(q2Values);
+
+
+
+  }
+
+
+</script>
